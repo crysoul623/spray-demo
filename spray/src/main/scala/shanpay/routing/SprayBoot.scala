@@ -3,7 +3,7 @@ package shanpay.routing
 import akka.actor.ActorSystem
 import spray.routing.SimpleRoutingApp
 
-object Main extends App with SimpleRoutingApp {
+object SprayBoot extends App with SimpleRoutingApp {
     
 	implicit val system = ActorSystem("my-system")
 	
