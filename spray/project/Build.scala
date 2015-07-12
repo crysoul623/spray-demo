@@ -9,7 +9,8 @@ object HelloBuild extends Build {
     lazy val basicSettings = Seq(
         scalaVersion := "2.11.2",
         resolvers ++= Seq(
-            //"Sonatype OSS Releases" at "https://oss.sonatype.org/content/repositories/releases",
+            "Sonatype OSS Releases" at "https://oss.sonatype.org/content/repositories/releases",
+            "Typesafe repo" at "http://repo.typesafe.com/typesafe/releases/",
             "spray" at "http://repo.spray.io"
             )
         )
@@ -24,8 +25,10 @@ object Dependencies {
     		)
         
     val spray = Seq(
-            	"io.spray" %% "spray-routing" % SPRAY_VERSION,
-            	"io.spray" %% "spray-can" % SPRAY_VERSION
+            	"io.spray" %% "spray-routing" % SPRAY_VERSION withSources,
+            	"io.spray" %% "spray-http" % SPRAY_VERSION withSources,
+            	"io.spray" %% "spray-can" % SPRAY_VERSION,
+            	"io.spray" %% "spray-client" % SPRAY_VERSION
             )
     val akka = Seq(
             	"com.typesafe.akka" %% "akka-actor" % AKKA_VERSION

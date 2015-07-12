@@ -1,34 +1,24 @@
+/**
+ *
+ */
 package shanpay.routing
 
 import akka.actor.ActorSystem
-import spray.routing.SimpleRoutingApp
+import akka.actor.Props
+import spray.can.Http
+import akka.io.IO
 
-object SprayBoot extends App with SimpleRoutingApp {
+/**
+ * @author Zoro
+ *
+ */
+object SprayBoot extends App {
     
-	implicit val system = ActorSystem("my-system")
+	implicit val system = ActorSystem("spray-demo")
 	
-	case class OrderItem(val size : Int, val dangerous : String);
+	val server = system.actorOf(Props[ItemServiceActor], "item-actor")
 	
-	startServer(interface = "localhost", port = 8080) {
-	    path("hello") {
-	        get {
-	            complete {
-	                <h1>Say hello to spray</h1>
-	            }
-	        }
-	    } ~
-	    path("items") {
-	        get {
-        		parameters('size.as[Int], 'dangerous ? "no").as(OrderItem) {
-	                orderItem => orderItem match {
-	                    case OrderItem(a, b) => complete(s"orderItem size[$a], dangerous[$b]")
-	                    case _ => complete("unknown")
-	                } 
-                }
-	        }
-	    } ~
-	    pathPrefix("items" / IntNumber) {
-	        orderId => complete(s"items[$orderId]")
-	    }
-	}
+	val webConfig = system.settings.config.getConfig("spray.web")
+	
+	IO(Http) ! Http.Bind(server, webConfig.getString("interface"), port = webConfig.getInt("port"))
 }
