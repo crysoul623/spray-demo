@@ -27,6 +27,7 @@ object Dependencies {
     val spray = Seq(
             	"io.spray" %% "spray-routing" % SPRAY_VERSION withSources,
             	"io.spray" %% "spray-http" % SPRAY_VERSION withSources,
+            	"io.spray" %% "spray-httpx" % SPRAY_VERSION,
             	"io.spray" %% "spray-can" % SPRAY_VERSION,
             	"io.spray" %% "spray-client" % SPRAY_VERSION
             )

@@ -37,6 +37,14 @@ trait DemoService extends HttpService {
 	                }
                 }
         } ~
+        path("item" / Rest / IntNumber) {
+           (itemName, itemNo) => 
+               get {
+                   complete {
+                       s"itemName[$itemName], itemNo[$itemNo]"
+                   }
+               }
+        } ~
         pathPrefix("item") {
             path("add") {
                 post {
