@@ -30,7 +30,16 @@ object RequestLevelApiDemo extends App {
     val response: Future[HttpResponse] = (IO(Http) ? HttpRequest(GET, Uri("http://spray.io"))).mapTo[HttpResponse]
     
     response onComplete {
-        case Success(httpResponse) => println(httpResponse.entity.asString)
-        case Failure(exception) => println(exception)
+        case Success(httpResponse) => 
+            println(httpResponse.entity.asString)
+            shutdown()
+        case Failure(exception) => 
+            println(exception)
+            shutdown()
+    }
+    
+    def shutdown(): Unit = {
+    		IO(Http).ask(Http.CloseAll)(1.seconds)
+    		system.shutdown()
     }
 }
