@@ -22,16 +22,16 @@ import spray.http.HttpMethods._
  */
 object RequestLevelApiDemo extends App {
 	
-    private implicit val timeout : Timeout = 5.seconds
+    private implicit val timeout : Timeout = 15.seconds
     
     implicit val system = ActorSystem()
     import system.dispatcher
-    
-    val response: Future[HttpResponse] = (IO(Http) ? HttpRequest(GET, Uri("http://spray.io"))).mapTo[HttpResponse]
+
+    val response: Future[HttpResponse] = (IO(Http) ? HttpRequest(POST, Uri("http://localhost:8080/item/add"), entity = HttpEntity(MediaTypes.`application/x-www-form-urlencoded`, "itemName=test&itemNo=1000"))).mapTo[HttpResponse]
     
     response onComplete {
         case Success(httpResponse) => 
-            println(httpResponse.entity.asString)
+            println(httpResponse.entity.data.asString)
             shutdown()
         case Failure(exception) => 
             println(exception)
